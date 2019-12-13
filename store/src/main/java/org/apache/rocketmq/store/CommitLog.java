@@ -571,6 +571,7 @@ public class CommitLog {
 
         long elapsedTimeInLock = 0;
         MappedFile unlockMappedFile = null;
+        /// 获取写入映射文件
         MappedFile mappedFile = this.mappedFileQueue.getLastMappedFile();
 
         putMessageLock.lock(); //spin or ReentrantLock ,depending on store config
@@ -590,7 +591,7 @@ public class CommitLog {
                 beginTimeInLock = 0;
                 return new PutMessageResult(PutMessageStatus.CREATE_MAPEDFILE_FAILED, null);
             }
-
+            /// 存储消息
             result = mappedFile.appendMessage(msg, this.appendMessageCallback);
             switch (result.getStatus()) {
                 case PUT_OK:
